@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace JordanHall.IbmClassifierService.Models
 {
-    public class TrainingRequest
+    public class TrainingRequestModel
     {
+        public byte[] FileBytes { get; set; }
+
         [JsonProperty("language")]
         public string Language { get; set; }
 

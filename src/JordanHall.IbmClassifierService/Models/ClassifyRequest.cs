@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace JordanHall.ClassifierService.Models
+namespace JordanHall.IbmClassifierService.Models
 {
     public class ClassifyRequest
     {

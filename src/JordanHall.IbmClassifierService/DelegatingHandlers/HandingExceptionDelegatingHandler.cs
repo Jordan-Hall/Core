@@ -2,9 +2,9 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using JordanHall.ClassifierService.Exception;
+using JordanHall.IbmClassifierService.Exception;
 
-namespace JordanHall.ClassifierService.DelegatingHandlers
+namespace JordanHall.IbmClassifierService.DelegatingHandlers
 {
     public class HandingExceptionDelegatingHandler : System.Net.Http.DelegatingHandler
     {

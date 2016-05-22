@@ -12,16 +12,17 @@ namespace JordanHall.Core.DelegatingHandlers
         private readonly string apiKey;
         public BasicAuthorizationHandler(string api)
         {
-            apiKey = Convert.ToBase64String(Encoding.Default.GetBytes(api));
+            apiKey = Convert.ToBase64String(Encoding.ASCII.GetBytes(api));
         }
         public BasicAuthorizationHandler(string username, string password)
         {
+
             apiKey = Convert.ToBase64String(Encoding.Default.GetBytes($"{username}:{password}"));
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.Headers.Authorization = new AuthenticationHeaderValue("basic", apiKey);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", apiKey);
             return base.SendAsync(request, cancellationToken);
         }
     }

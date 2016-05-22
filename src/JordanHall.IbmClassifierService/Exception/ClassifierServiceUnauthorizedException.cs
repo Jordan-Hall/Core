@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
-namespace JordanHall.ClassifierService.Exception
+namespace JordanHall.IbmClassifierService.Exception
 {
     public class ClassifierServiceUnauthorizedException : UnauthorizedAccessException
     {

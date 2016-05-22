@@ -30,8 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\Source\Repos\JordanHall.NaturalLanguageClassifier.Site\JordanHall.Ibm.Nlc.SiteApi\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\Source\Repos\JordanHall.NaturalLanguageClassifier.Site\JordanHall.Ibm.Nlc.SiteApi\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,9 +57,21 @@
     <Compile Include="Models\Classify.cs" />
     <Compile Include="Models\ClassifyRequest.cs" />
     <Compile Include="Models\ClassifyResponse.cs" />
+    <Compile Include="Models\ListClassifierResponse.cs" />
     <Compile Include="Models\TrainingRequest.cs" />
+    <Compile Include="Models\TrainingRequestModel.cs" />
     <Compile Include="Models\TrainingResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JordanHall.Core\JordanHall.Core.csproj">
+      <Project>{0b82cb4a-74b1-48a9-ad88-df0d3fdcc23c}</Project>
+      <Name>JordanHall.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

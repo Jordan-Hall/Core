@@ -1,8 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
-namespace JordanHall.ClassifierService.Models
+namespace JordanHall.IbmClassifierService.Models
 {
     public class Classifier
     {

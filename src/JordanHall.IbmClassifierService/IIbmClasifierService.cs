@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using JordanHall.ClassifierService.Models;
-using System.Threading;
+using JordanHall.IbmClassifierService.Models;
 
-namespace JordanHall.ClassifierService
+namespace JordanHall.IbmClassifierService
 {
     public interface IIbmClasifierService
     {
-        Task<TrainingResponse> PostTrainingData(TrainingRequest trainingRequest, CancellationToken cancellationToken);
-        Task<IEnumerable<Classifier>> GetClassifiers(CancellationToken cancellationToken);
+        Task<TrainingResponse> PostTrainingData(TrainingRequestModel trainingRequest, CancellationToken cancellationToken);
+        Task<ClassifierList> GetClassifiers(CancellationToken cancellationToken);
         Task<Classifier> GetClassifierInformation(string classifierId, CancellationToken cancellationToken);
         Task<bool> DeleteClassifier(string classifierId, CancellationToken cancellationToken);
         Task<ClassifyResponse> PostQuery(ClassifyRequest request, CancellationToken cancellationToken);

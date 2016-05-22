@@ -5,16 +5,17 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using JordanHall.ClassifierService.DelegatingHandlers;
-using JordanHall.ClassifierService.Models;
 using JordanHall.Core.DelegatingHandlers;
 using JordanHall.Core.HttpClientFactory;
+using JordanHall.IbmClassifierService.DelegatingHandlers;
+using JordanHall.IbmClassifierService.Models;
 using Newtonsoft.Json;
 
-namespace JordanHall.ClassifierService
+namespace JordanHall.IbmClassifierService
 {
     public class IbmClasifierService : IIbmClasifierService
     {
+        const string endPoint = "/natural-language-classifier/api/v1";
         private readonly Core.HttpClientFactory.HttpClientFactory clientFactory;
 
         public IbmClasifierService()
@@ -38,7 +39,7 @@ namespace JordanHall.ClassifierService
         {
             using (var client = clientFactory.CreateClient())
             {
-                var httpResponse = await client.DeleteAsync($"/classifiers/{classifierId}", cancellationToken);
+                var httpResponse = await client.DeleteAsync($"{endPoint}/classifiers/{classifierId}", cancellationToken);
 
                 if (httpResponse.IsSuccessStatusCode)
                 {
@@ -52,7 +53,7 @@ namespace JordanHall.ClassifierService
         {
             using (var client = clientFactory.CreateClient())
             {
-                var httpResponse = await client.GetAsync($"/classifiers/{classifierId}", cancellationToken);
+                var httpResponse = await client.GetAsync($"{endPoint}/classifiers/{classifierId}", cancellationToken);
 
                 if (httpResponse.IsSuccessStatusCode)
                 {
@@ -63,16 +64,16 @@ namespace JordanHall.ClassifierService
             return null;
         }
 
-        public async Task<IEnumerable<Classifier>> GetClassifiers(CancellationToken cancellationToken)
+        public async Task<ClassifierList> GetClassifiers(CancellationToken cancellationToken)
         {
             using (var client = clientFactory.CreateClient())
             {
-                var httpResponse = await client.GetAsync("/classifiers", cancellationToken);
+                var httpResponse = await client.GetAsync($"{endPoint}/classifiers", cancellationToken);
 
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     var content = await httpResponse.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<IEnumerable<Classifier>>(content);
+                    return JsonConvert.DeserializeObject<ClassifierList>(content);
                 }
             }
             return null;
@@ -82,7 +83,7 @@ namespace JordanHall.ClassifierService
         {
             using (var client = clientFactory.CreateClient())
             {
-                var httpResponse = await client.PostAsJsonAsync("/classifiers", request, cancellationToken);
+                var httpResponse = await client.GetAsync($"{endPoint}/classifiers/{request.ClassifierId}/classify?text={request.Query}", cancellationToken);
 
                 if (httpResponse.IsSuccessStatusCode)
                 {
@@ -93,18 +94,21 @@ namespace JordanHall.ClassifierService
             return null;
         }
 
-        public async Task<TrainingResponse> PostTrainingData(TrainingRequest trainingRequest, CancellationToken cancellationToken)
+        public async Task<TrainingResponse> PostTrainingData(TrainingRequestModel trainingRequest, CancellationToken cancellationToken)
         {
             var requestContent = new MultipartFormDataContent
             {
                 {
-                    new StreamContent(new MemoryStream(trainingRequest.FileBytes)), "training_data",
-                    trainingRequest.FileName
+                    new StreamContent(new MemoryStream(trainingRequest.FileBytes)), "training_data"
+                },
+                {
+                    new StringContent(JsonConvert.SerializeObject(new TrainingRequest() {Language =  trainingRequest.Language, Name= trainingRequest.Name})),
+                    "training_metadata"
                 }
             };
             using (var client = clientFactory.CreateClient())
             {
-                var httpResponse = await client.PostAsync("/classifiers", requestContent, cancellationToken);
+                var httpResponse = await client.PostAsync($"{endPoint}/classifiers", requestContent, cancellationToken);
 
                 if (httpResponse.IsSuccessStatusCode)
                 {

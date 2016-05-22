@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace JordanHall.ClassifierService.Models
+namespace JordanHall.IbmClassifierService.Models
 {
     public class TrainingResponse
     {
