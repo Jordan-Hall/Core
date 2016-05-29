@@ -7,8 +7,8 @@
     <ProjectGuid>{0B82CB4A-74B1-48A9-AD88-DF0D3FDCC23C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>JordanHall.Core</RootNamespace>
-    <AssemblyName>JordanHall.Core</AssemblyName>
+    <RootNamespace>JordanHall.Core.HttpClientFactory</RootNamespace>
+    <AssemblyName>JordanHall.Core.HttpClientFactory</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -49,8 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelegatingHandlers\BasicAuthorizationHandler.cs" />
-    <Compile Include="HttpClientFactory\HttpClientFactory.cs" />
-    <Compile Include="HttpClientFactory\HttpClientSettings.cs" />
+    <Compile Include="HttpClientFactory.cs" />
+    <Compile Include="HttpClientSettings.cs" />
+    <Compile Include="HttpRequester.cs" />
+    <Compile Include="IHttpRequester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

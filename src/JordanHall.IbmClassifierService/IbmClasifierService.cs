@@ -5,8 +5,8 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using JordanHall.Core.DelegatingHandlers;
 using JordanHall.Core.HttpClientFactory;
+using JordanHall.Core.HttpClientFactory.DelegatingHandlers;
 using JordanHall.IbmClassifierService.DelegatingHandlers;
 using JordanHall.IbmClassifierService.Models;
 using Newtonsoft.Json;
@@ -16,7 +16,7 @@ namespace JordanHall.IbmClassifierService
     public class IbmClasifierService : IIbmClasifierService
     {
         const string endPoint = "/natural-language-classifier/api/v1";
-        private readonly Core.HttpClientFactory.HttpClientFactory clientFactory;
+        private readonly IHttpRequester httpRequester;
 
         public IbmClasifierService()
         {
@@ -32,66 +32,27 @@ namespace JordanHall.IbmClassifierService
                 },
                 BaseUri = new Uri(ConfigurationManager.AppSettings["IbmClasifierBaseUrl"])
             };
-            clientFactory = new Core.HttpClientFactory.HttpClientFactory(settings);
+            httpRequester = new HttpRequester(new Core.HttpClientFactory.HttpClientFactory(settings));
         }
 
         public async Task<bool> DeleteClassifier(string classifierId, CancellationToken cancellationToken)
         {
-            using (var client = clientFactory.CreateClient())
-            {
-                var httpResponse = await client.DeleteAsync($"{endPoint}/classifiers/{classifierId}", cancellationToken);
-
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return await httpRequester.Delete($"{endPoint}/classifiers/{classifierId}");
         }
 
         public async Task<Classifier> GetClassifierInformation(string classifierId, CancellationToken cancellationToken)
         {
-            using (var client = clientFactory.CreateClient())
-            {
-                var httpResponse = await client.GetAsync($"{endPoint}/classifiers/{classifierId}", cancellationToken);
-
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    var content = await httpResponse.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<Classifier>(content);
-                }
-            }
-            return null;
+            return await httpRequester.Get<Classifier>($"{endPoint}/classifiers/{classifierId}");
         }
 
         public async Task<ClassifierList> GetClassifiers(CancellationToken cancellationToken)
         {
-            using (var client = clientFactory.CreateClient())
-            {
-                var httpResponse = await client.GetAsync($"{endPoint}/classifiers", cancellationToken);
-
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    var content = await httpResponse.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<ClassifierList>(content);
-                }
-            }
-            return null;
+            return await httpRequester.Get<ClassifierList>($"{endPoint}/classifiers");
         }
 
-        public async Task<ClassifyResponse> PostQuery(ClassifyRequest request, CancellationToken cancellationToken)
+        public async Task<ClassifyResponse> GetClassification(ClassifyRequest request, CancellationToken cancellationToken)
         {
-            using (var client = clientFactory.CreateClient())
-            {
-                var httpResponse = await client.GetAsync($"{endPoint}/classifiers/{request.ClassifierId}/classify?text={request.Query}", cancellationToken);
-
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    var content = await httpResponse.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<ClassifyResponse>(content);
-                }
-            }
-            return null;
+            return await httpRequester.Get<ClassifyResponse>($"{endPoint}/classifiers/{request.ClassifierId}/classify?text={request.Query}");
         }
 
         public async Task<TrainingResponse> PostTrainingData(TrainingRequestModel trainingRequest, CancellationToken cancellationToken)
@@ -106,19 +67,7 @@ namespace JordanHall.IbmClassifierService
                     "training_metadata"
                 }
             };
-            using (var client = clientFactory.CreateClient())
-            {
-                var httpResponse = await client.PostAsync($"{endPoint}/classifiers", requestContent, cancellationToken);
-
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    var content = await httpResponse.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<TrainingResponse>(content);
-                }
-            }
-            return null;
+            return await httpRequester.Post<TrainingResponse>($"{endPoint}/classifiers", requestContent);
         }
-
-        
     }
 }

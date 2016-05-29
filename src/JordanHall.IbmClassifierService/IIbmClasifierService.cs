@@ -10,6 +10,6 @@ namespace JordanHall.IbmClassifierService
         Task<ClassifierList> GetClassifiers(CancellationToken cancellationToken);
         Task<Classifier> GetClassifierInformation(string classifierId, CancellationToken cancellationToken);
         Task<bool> DeleteClassifier(string classifierId, CancellationToken cancellationToken);
-        Task<ClassifyResponse> PostQuery(ClassifyRequest request, CancellationToken cancellationToken);
+        Task<ClassifyResponse> GetClassification(ClassifyRequest request, CancellationToken cancellationToken);
     }
 }

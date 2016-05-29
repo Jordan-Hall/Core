@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace JordanHall.Core.DelegatingHandlers
+namespace JordanHall.Core.HttpClientFactory.DelegatingHandlers
 {
     public class BasicAuthorizationHandler : System.Net.Http.DelegatingHandler
     {
